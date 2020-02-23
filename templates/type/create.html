@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Xujjat turi</h4>
+                            </div>
+                            <div class="content">
+                                <form>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Xujjat turi</label>
+                                                <input name="name" type="text" class="form-control" placeholder="Company" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <button id="formSendButton" type="submit" data-url="{% url 'api-type-create' %}" class="btn btn-info btn-fill pull-right">Create Profile</button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(function () {
+            $("#formSendButton").click(function (event) {
+                event.preventDefault();
+
+                let formData = new FormData();
+                formData.append("name", $("input[name='name']").val());
+
+
+
+                $.ajax({
+                    url: $(this).data("url"),
+                    data: formData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    success: function (data) {
+                        var x = document.getElementById("mainSuccess");
+                        x.className = "show";
+                        setTimeout(function(){
+                            x.className = x.className.replace("show", "");
+                            location.reload();
+                        }, 1500);
+                        window.location.href = '/type/list';
+                    },
+                    error: function (data) {
+                        var x = document.getElementById("mainError");
+
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

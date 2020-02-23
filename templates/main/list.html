@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Основной список</h4>
+                                <a href="{% url 'main-create' %}" type="button" class="btn btn-info m-t-10 float-right">Добавить</a>
+
+                            </div>
+
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <th>ID</th>
+                                    	<th>Приход</th>
+                                        <th>Расход</th>
+                                        <th>Сумма</th>
+                                        <th>Дата</th>
+                                        <th>Проводка</th>
+
+
+                                    </thead>
+                                    <tbody>
+                                    {% for m in main %}
+                                        <tr>
+                                        	<td>{{m.id}}</td>
+                                        	<td>{{ m.prixod.department.name }}</td>
+                                            <td>{{ m.rasxod.department.name }}</td>
+                                            <td>{{ m.summa }}</td>
+                                            <td>{{ m.date|date:"d.m.Y"|default_if_none:"" }}</td>
+                                            <td>{{ m.provodka }}</td>
+
+
+                                            <td><a href="{% url 'main-update' m.id %}" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
+
+
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+{% endblock %}

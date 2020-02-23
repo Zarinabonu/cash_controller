@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block content %}
+
+    <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Узгартириш киритиш</h4>
+                            </div>
+                            <div class="content col-md-8">
+                                <form>
+                                    <button type="submit" href="{% url 'card-update' %}" class="btn btn-info btn-fill pull-right">Картани узгартириш</button>                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                            <div class="content ">
+                                <form>
+                                    <button type="submit" href="#" class="btn btn-info btn-fill pull-right">Статусни узгартириш</button>                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#updateButton").click(function (e) {
+                e.preventDefault();
+
+
+                let formData = new FormData();
+                formData.append("date", $("input[name='date']").val());
+                formData.append("number", $("input[name='number']").val());
+                formData.append("control_number", $("input[name='control_number']").val());
+                formData.append("name", $("textarea[name='name']").val());
+                formData.append("item", $("input[name='item']").val());
+                formData.append("short_content", $("textarea[name='short_content']").val());
+                formData.append("full_content", $("textarea[name='full_content']").val());
+                formData.append("start_date", $("input[name='start_date']").val());
+                formData.append("finish_date", $("input[name='finish_date']").val());
+                formData.append('department_id', $('select[name="department"]').val());
+                formData.append('type_id', $('select[name="type"]').val());
+                formData.append('main_performer_id', $('select[name="main_performer"]').val());
+                formData.append('all_performer_id', $('select[name="all_performer"]').val());
+                formData.append('status', $('select[name="status"]').val());
+
+
+                var url = $("#updateButton").data("url");
+                {#$.ajax({#}
+                {#    headers: { "X-CSRFToken": "{{csrf_token}}" },#}
+                {#    url: url,#}
+                {#    processData: false,#}
+                {#    contentType: false,#}
+                {#    method: 'PUT',#}
+                {#    data: formData,#}
+                {#    headers: {'X-CSRFToken': '{{ csrf_token }}'},#}
+                {#    success: function (data) {#}
+                {#        window.location.href = '/card/list';#}
+                {#    },#}
+                {#    error: function (data) {#}
+                {#        alert('Error');#}
+                {#    }#}
+                {#})#}
+            $.ajax({
+                    url: $(this).data("url"),
+                    data: formData,
+                    type: "PUT",
+                    contentType: false,
+                    processData: false,
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    success: function (data) {
+                        var x = document.getElementById("mainSuccess");
+                        x.className = "show";
+                        setTimeout(function(){
+                            x.className = x.className.replace("show", "");
+                            location.reload();
+                        }, 1500);
+                        window.location.url = '/card/create';
+                    },
+                    error: function (data) {
+                        var x = document.getElementById("mainError");
+
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    }
+                });
+
+            })
+        });
+    </script>
+{% endblock %}

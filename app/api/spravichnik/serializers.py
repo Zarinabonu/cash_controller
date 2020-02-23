@@ -34,6 +34,7 @@ class SpravichnikSerializer(ModelSerializer):
         password = validated_data.get('password')
         start_FIO = validated_data.get('start_FIO')
         MFO = validated_data.get('MFO')
+
         if dept:
             d = Department.objects.get(id=dept)
             instance.department = d

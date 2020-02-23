@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+<style>
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+
+</style>
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+
+{#                        <a href="{% url 'card-create' %}" type="button" class="btn btn-info m-t-10 float-right">Добавить</a>#}
+
+                        <div class="search-form__app">
+                            <form action="#" method="GET">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Идора</label>
+                                    <select class="form-control select picker show-tick" name="dept_search" id="">
+                                        <option value="">Выберите</option>
+                                        {% for dep in depts %}
+                                            <option name="dept_search" value="{{ dep.id }}">{{ dep.name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Ҳужжат тури</label>
+                                    <select class="form-control select picker show-tick" name="type_search" id="">
+                                        <option value="">Выберите</option>
+                                        {% for type in types %}
+                                            <option name="type_search" value="{{ type.id }}">{{ type.name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Ҳужжат санаси</label>
+                                    <input name="date_search" type="date" class="form-control" id="" value="{{ date }}">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Ҳужжат рақами</label>
+                                    <input name="number_search" type="text" class="form-control" id="" value="{{ number }}">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Назорат варақаси</label>
+                                    <input name="control_number_search" type="text" class="form-control" id="" value="{{ control_number }}">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Ҳужжат банди</label>
+                                    <input name="item_search" type="text" class="form-control" id="" value="{{ item }}">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Асосий ижрочи</label>
+                                    <select class="form-control select picker show-tick" name="main_performer_search" id="">
+                                        <option value="">Выберите</option>
+                                        {% for m_per in main_perf %}
+                                            <option name="main_performer_search" value="{{ m_per.id }}">{{ m_per.name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Ижро муддати</label>
+                                    <input name="start_date_search" type="date" class="form-control" id="" value="{{ start_date }}">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Иж/этилган санаси</label>
+                                    <input name="finish_date_search" type="date" class="form-control" id="" value="{{ finish_date }}">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Бажарилган статуси</label>
+                                    <select class="form-control select picker show-tick" name="status_search" id="">
+                                        <option value="">Выберите</option>
+                                        {% for sta in statuses %}
+                                            <option name="status_search " value="{{ sta.id }}">{{ sta.name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="search-buttons">
+                                    <div class="form-search__button " id="">
+                                        <button class="btn btn-info m-t-10 float-right"  id="searchButton" type="submit">Поиск</button>
+                                    </div>
+                                </div>
+                                <a href="{% url 'excel' %}" type="button" class="btn btn-info m-t-10 float-right">Excel</a>
+
+                                <!--<div class="delete-buttons">
+                                    <button id="deleteEmpButton" data-url="#">{% trans 'Delete' %}</button>
+                                </div>-->
+                            </div>
+
+                            <a href="{% url 'card-create' %}" type="button" class="btn btn-info m-t-10 float-right">Добавить</a>
+                            <div class="clearfix"></div>
+                        </form>
+                        </div>
+
+                            <div style="overflow-x:auto !important;" class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%">
+{#                          content table-responsive table-full-width  #}
+                                <table class="table table-hover table-striped dtHorizontalVerticalExampleWrapper">
+                                    <thead>
+                                        <th style="width:5%">ID</th>
+                                    	<th style="width:8%">Идора</th>
+                                    	<th style="width:8%">Ҳужжат тури</th>
+                                    	<th style="width:10%">Ҳужжат санаси</th>
+                                        <th style="width:10%">Ҳужжат рақами</th>
+                                        <th style="width:8%">Назорат варақаси</th>
+                                        <th style="width:60%">Ҳужжат номи</th>
+                                        <th style="width:8%">Ҳужжат банди</th>
+                                        <th style="width:40%">Ҳужжат (топшириқ)нинг қисқача мазмуни</th>
+                                        <th style="width:8%">Асосий ижрочи</th>
+                                    	<th style="width:8%">Барча ижрочилар</th>
+                                        <th style="width:10%">Ижро муддати</th>
+                                        <th style="width:10%">Барча муддатлар</th>
+                                        <th style="width:10%">Иж/этилган санаси</th>
+                                        <th style="width:10%">Бажарилганлик статуси</th>
+                                        <th style="width:5%">Белги(-/+)</th>
+                                        <th style="width:40%">Топшириқ ижроси тўғрисида таҳлилий маълумотлар</th>
+
+                                    </thead>
+                                    <tbody>
+                                    {% for card in cards %}
+                                        <tr>
+                                        	<td>{{ card.id }}</td>
+                                        	<td>{{ card.department.name }}</td>
+                                        	<td>{{ card.type.name }}</td>
+                                        	<td>{{ card.date|date:"d.m.Y"|default_if_none:"" }}</td>
+                                        	<td>{{ card.number }}</td>
+                                            <td>{{ card.control_number }}</td>
+                                            <td class="cell-breakWord">{{ card.name }}</td>
+                                            <td>{{ card.item }}</td>
+                                            <td>{{ card.short_content }}</td>
+                                            <td>{{ card.main_performer.name }}</td>
+                                            <td>{{ card.main_performer.name }}</td>
+                                            <td>{{ card.start_date|date:"d.m.Y"|default_if_none:"" }}</td>
+                                            <td>NULL</td>
+                                            <td>{{ card.finish_date|date:"d.m.Y"|default_if_none:"" }}</td>
+                                            <td>NULL</td>
+                                            <td>Null</td>
+                                            <td>{{ card.full_content }}</td>
+
+
+                                            <td><a href="{% url 'card-update' card.id %}" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
+
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+        $('#dtHorizontalExample').DataTable({
+        "scrollX": true
+        });
+        $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+    <script>
+    $(document).ready(function () {
+    $('#dtHorizontalVerticalExample').DataTable({
+    "scrollX": true,
+    "scrollY": 200,
+    });
+    $('.dataTables_length').addClass('bs-select');
+    });
+    </script>
+{% endblock %}

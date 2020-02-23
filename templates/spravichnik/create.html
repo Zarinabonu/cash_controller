@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Создать справичник</h4>
+                            </div>
+                            <div class="content">
+                                <form>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Idora Nomi</label>
+                                                <select class="form-control selectpicker show-tick" name="department" id="region">
+                                                    {% for dept in depts %}
+                                                        <option value="{{ dept.id }}">{{ dept.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>РС</label>
+                                                <input name="rs" type="text" class="form-control" placeholder="Company" >
+                                        </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>ИНН</label>
+                                                <input name="inn" type="text" class="form-control" placeholder="Company" >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Нач.ФИО</label>
+                                                <input name="start_FIO" type="text" class="form-control" placeholder="Company" >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Парол</label>
+                                                <input name="password" type="text" class="form-control" placeholder="Company" >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>МФО</label>
+                                                <input name="MFO" type="text" class="form-control" placeholder="Company" >
+                                             </div>
+                                        </div>
+
+                                    </div>
+
+                                    <button id="formSendButton" type="submit" data-url="{% url 'api-spravichnik-create' %}" class="btn btn-info btn-fill pull-right">Добавить</button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(function () {
+            $("#formSendButton").click(function (event) {
+                event.preventDefault();
+
+                let formData = new FormData();
+                formData.append("department", $("select[name='department']").val());
+                formData.append("rs", $("input[name='rs']").val());
+                formData.append("inn", $("input[name='inn']").val());
+                formData.append("password", $("input[name='password']").val());
+                formData.append("start_FIO", $("input[name='start_FIO']").val());
+                formData.append("MFO", $("input[name='MFO']").val());
+
+
+                $.ajax({
+                    url: $(this).data("url"),
+                    data: formData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    success: function (data) {
+                        var x = document.getElementById("mainSuccess");
+                        x.className = "show";
+                        setTimeout(function(){
+                            x.className = x.className.replace("show", "");
+                            location.reload();
+                        }, 1500);
+                        window.location.href = '/dept/list';
+                    },
+                    error: function (data) {
+                        var x = document.getElementById("mainError");
+
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Справичник</h4>
+                                <a href="{% url 'spravichnik-create' %}" type="button" class="btn btn-info m-t-10 float-right">Добавить</a>
+
+                            </div>
+
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <th>ID</th>
+                                    	<th>Отдел</th>
+                                        <th>Отдел</th>
+                                        <th>РС</th>
+                                        <th>ИНН</th>
+                                        <th>Нач ФИО</th>
+                                        <th>Парол</th>
+                                        <th>МФО</th>
+
+                                    </thead>
+                                    <tbody>
+                                    {% for sp in sprav %}
+                                        <tr>
+                                        	<td>{{sp.id}}</td>
+                                        	<td>{{ sp.department.name }}</td>
+                                            <td>{{ sp.rs }}</td>
+                                            <td>{{ sp.inn }}</td>
+                                            <td>{{ sp.start_FIO }}</td>
+                                            <td>{{ sp.password }}</td>
+                                            <td>{{ sp.MFO }}</td>
+
+
+                                            <td><a href="{% url 'spravichnik-update' sp.id %}" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
+
+
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+{% endblock %}

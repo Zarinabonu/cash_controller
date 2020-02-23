@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block content %}
+
+    <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Edit Profile</h4>
+                            </div>
+                            <div class="content">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label>Идора</label>
+{#                                                <input type="text" class="form-control" disabled placeholder="Company" value="Creative Code Inc.">#}
+                                                <select class="form-control selectpicker show-tick" name="department" id="region">
+                                                    {% for dep in depts %}
+                                                    <option value="{{ dep.id }}">{{ dep.name }}</option>
+
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Ҳужжат тури</label>
+{#                                                <input type="text" class="form-control" placeholder="Username" value="michael23">#}
+                                                    <select class="form-control selectpicker show-tick" name="type" id="region">
+                                                    {% for type in types %}
+                                                    <option value="{{ type.id }}">{{ type.name }}</option>
+
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Ҳужжат санаси</label>
+                                                <input name="date" type="date" class="form-control" placeholder="Email">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Ҳужжат рақами</label>
+                                                <input name="number" type="text" class="form-control" >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Назорат варақаси</label>
+                                                <input name="control_number" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Бажарилганлик статуси</label>
+                                                <select class="form-control selectpicker show-tick" name="status" id="region">
+                                                    {% for sta in statuses %}
+                                                    <option value="{{ sta.id }}">{{ sta.name }}</option>
+
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Ҳужжат номи</label>
+                                                <textarea name="name" rows="5" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Ҳужжатнинг қисқача мазмуни</label>
+                                                <textarea name="short_content" rows="5" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Ҳужжат банди</label>
+                                                <input name="item" type="text" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Асосий ижрочи</label>
+                                                <select class="form-control selectpicker show-tick" name="main_performer" id="region">
+                                                    {% for perf in performers %}
+                                                    <option value="{{ perf.id }}">{{ perf.name }}</option>
+
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Барча ижрочилар</label>
+                                                <select class="form-control selectpicker show-tick" name="all_performer" id="region">
+                                                    {% for perf in performers %}
+                                                    <option value="{{ perf.id }}">{{ perf.name }}</option>
+
+                                                    {% endfor %}
+                                                </select>                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Ижро муддати</label>
+                                                <input name="start_date" type="date" class="form-control" >
+                                            </div>
+                                        </div>
+                                         <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Ижро этилган санаси</label>
+                                                <input name="finish_date" type="date" class="form-control" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Топшириқ ижроси тўғрисида таҳлилий маълумотлар</label>
+                                                <textarea name="full_content" rows="5" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+{##}
+                                    <button id="updateButton" type="submit" class="btn btn-success" data-url="{% url 'api-card-update' card.id %}"> <i class="fa fa-check"></i> Сохранить</button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#updateButton").click(function (e) {
+                e.preventDefault();
+
+
+                let formData = new FormData();
+                formData.append("date", $("input[name='date']").val());
+                formData.append("number", $("input[name='number']").val());
+                formData.append("control_number", $("input[name='control_number']").val());
+                formData.append("name", $("textarea[name='name']").val());
+                formData.append("item", $("input[name='item']").val());
+                formData.append("short_content", $("textarea[name='short_content']").val());
+                formData.append("full_content", $("textarea[name='full_content']").val());
+                formData.append("start_date", $("input[name='start_date']").val());
+                formData.append("finish_date", $("input[name='finish_date']").val());
+                formData.append('department_id', $('select[name="department"]').val());
+                formData.append('type_id', $('select[name="type"]').val());
+                formData.append('main_performer_id', $('select[name="main_performer"]').val());
+                formData.append('all_performer_id', $('select[name="all_performer"]').val());
+                formData.append('status', $('select[name="status"]').val());
+
+
+                var url = $("#updateButton").data("url");
+                $.ajax({
+                    url: $(this).data("url"),
+                    data: formData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    success: function (data) {
+                        var x = document.getElementById("mainSuccess");
+                        x.className = "show";
+                        setTimeout(function(){
+                            x.className = x.className.replace("show", "");
+                            location.reload();
+                        }, 1500);
+                        window.location.url = '/card/create';
+                    },
+                    error: function (data) {
+                        var x = document.getElementById("mainError");
+
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    }
+                });
+                {#$.ajax({#}
+                {#    headers: { "X-CSRFToken": "{{csrf_token}}" },#}
+                {#    url: url,#}
+                {#    processData: false,#}
+                {#    contentType: false,#}
+                {#    method: 'PUT',#}
+                {#    data: formData,#}
+                {#    headers: {'X-CSRFToken': '{{ csrf_token }}'},#}
+                {#    success: function (data) {#}
+                {#        window.location.href = '/card/list';#}
+                {#    },#}
+                {#    error: function (data) {#}
+                {#        alert('Error');#}
+                {#    }#}
+                {#})#}
+            {#$.ajax({#}
+            {#        url: $(this).data("url"),#}
+            {#        data: formData,#}
+            {#        type: "PUT",#}
+            {#        contentType: false,#}
+            {#        processData: false,#}
+            {#        headers: {'X-CSRFToken': '{{ csrf_token }}'},#}
+            {#        success: function (data) {#}
+            {#            var x = document.getElementById("mainSuccess");#}
+            {#            x.className = "show";#}
+            {#            setTimeout(function(){#}
+            {#                x.className = x.className.replace("show", "");#}
+            {#                location.reload();#}
+            {#            }, 1500);#}
+            {#            window.location.url = '/card/create';#}
+            {#        },#}
+            {#        error: function (data) {#}
+            {#            var x = document.getElementById("mainError");#}
+            {##}
+            {#            x.className = "show";#}
+            {#            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);#}
+            {#        }#}
+            {#    });#}
+
+            })
+        });
+    </script>
+{% endblock %}

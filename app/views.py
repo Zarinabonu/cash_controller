@@ -101,7 +101,6 @@ class MainCreateView(TemplateView):
         return context
 
 
-class
 
 
 

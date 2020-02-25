@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView
 
-from app.model import Department, Spravichnik, Main
+from app.model import Department, Spravichnik, Main, Saldo
 
 
 class DepartmentListView(TemplateView):
@@ -101,6 +101,27 @@ class MainCreateView(TemplateView):
         return context
 
 
+class SaldoCreateView(TemplateView):
+    template_name = 'saldo/create.html'
+
+    def get_context_data(self, **kwargs):
+        sp = Spravichnik.objects.all()
+        context = {
+            'spr':sp
+        }
+        return context
+
+
+class SaldoListView(TemplateView):
+    template_name = 'saldo/list.html'
+
+    def get_context_data(self, **kwargs):
+        s = Saldo.objects.all()
+        context = {
+            'sal': s
+
+        }
+        return context
 
 
 

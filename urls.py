@@ -30,5 +30,7 @@ urlpatterns = [
     path('main/list', views.MainListView.as_view(), name='main-list'),
     path('main/update/<int:id>', views.MainUpdateView.as_view(), name='main-update'),
     path('main/create', views.MainCreateView.as_view(), name='main-create'),
+    path('saldo/create', views.SaldoCreateView.as_view(), name='saldo-create'),
+    path('saldo/list', views.SaldoListView.as_view(), name='saldo-list'),
 
 ]

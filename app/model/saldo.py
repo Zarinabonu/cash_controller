@@ -13,14 +13,27 @@ class Saldo(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
-# @receiver(post_save, sender=Saldo)
-# def create_saldo(sender, instance, created, **kwargs):
-#     if created:
-#         y = instance.date.year
-#         m = instance.date.month
-#         main = Main.objects.filter(date__year=y).filter(date__month=m)
-#         main.active = False
-#         main.save
+@receiver(post_save, sender=Saldo)
+def create_saldo(sender, instance, created, **kwargs):
+    ras = 0
+    pri = 0
+
+    if created:
+        r = Main.objects.filter(rasxod=instance.spravichnik).filter(date__year=instance.date.year).filter(date__month=instance.date.month)
+        p = Main.objects.filter(prixod=instance.spravichnik).filter(date__year=instance.date.year).filter(date__month=instance.date.month)
+
+        for item in r:
+            ras += item.summa
+            item.active = False
+            item.save()
+        print('object is ', r, ' RASXOD is ', ras)
+
+        for pr in p:
+            pri += pr.summa
+        print(' object is ', r, ' PRIXOD is ', pri)
+
+
+
 
 
 

@@ -10,8 +10,8 @@ class MainSerializer(ModelSerializer):
 
     class Meta:
         model = Main
-        fields = ('prixod',
-                  'rasxod',
+        fields = ('rasxod',
+                  'prixod',
                   'summa',
                   'date',
                   'provodka',
@@ -36,25 +36,26 @@ class MainSerializer(ModelSerializer):
         summa = validated_data.get('summa')
         provodka = validated_data.get('provodka')
         date = validated_data.get('date')
-        if pri:
-            p = Spravichnik.objects.get(id=pri)
+        if instance.active==True:
+            if ras:
+                p = Spravichnik.objects.get(id=ras)
 
-            instance.prixod = p
-            instance.save()
-        if ras:
-            p = Spravichnik.objects.get(id=ras)
+                instance.rasxod = p
+                instance.save()
+            if pri:
+                p = Spravichnik.objects.get(id=pri)
 
-            instance.rasxod = p
-            instance.save()
-        if summa:
-            instance.summa = summa
-            instance.save()
-        if provodka:
-            instance.provodka = provodka
-            instance.save()
-        if date:
-            instance.date = date
-            instance.save()
+                instance.prixod = p
+                instance.save()
+            if summa:
+                instance.summa = summa
+                instance.save()
+            if provodka:
+                instance.provodka = provodka
+                instance.save()
+            if date:
+                instance.date = date
+                instance.save()
 
         return instance
 

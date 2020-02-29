@@ -11,7 +11,8 @@ class SaldoSerializer(ModelSerializer):
         model = Saldo
         fields = ('spravichnik',
                   'date',
-                  'tick')
+                  'tick',
+                  'count_saldo')
 
     def create(self, validated_data):
         sp = validated_data.pop('spravichnik')

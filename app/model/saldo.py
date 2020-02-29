@@ -9,7 +9,7 @@ class Saldo(models.Model):
     spravichnik = models.ForeignKey(Spravichnik, on_delete=models.SET_NULL, null=True)
     date = models.DateField(blank=True, null=True)
     tick = models.BooleanField(default=False)
-    count = models.IntegerField(null=True, blank=True)
+    count_saldo = models.IntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
 
@@ -30,7 +30,20 @@ def create_saldo(sender, instance, created, **kwargs):
 
         for pr in p:
             pri += pr.summa
-        print(' object is ', r, ' PRIXOD is ', pri)
+        check = Saldo.objects.filter(spravichnik=instance.spravichnik)
+        # check_s = check.count(id)
+        print('check saldo: ', check.count())
+        # if not check.count()==0:
+        if instance.date.month == 1:
+            s = Saldo. objects.filter(spravichnik=instance.spravichnik).filter(date__year=instance.date.year - 1).filter(date__month=12)
+        else:
+            s = Saldo.objects.filter(spravichnik=instance.spravichnik).filter(date__year=instance.date.year).filter(date__month=instance.date.month - 1)
+        if check.count() > 1:
+            instance.count_saldo = s.first().count_saldo + pri - ras
+            instance.save()
+        return  instance
+
+        # print(' object is ', r, ' PRIXOD is ', pri)
 
 
 

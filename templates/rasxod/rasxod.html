@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Создать расход</h4>
+                            </div>
+                            <div class="content">
+                                <form>
+                                    <div class="row">
+                                        <div id="app">
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Kому</label>
+                                                    <select class="form-control selectpicker show-tick" name="prixod" id="region">
+                                                        {% for sp in user %}
+                                                            <option value="{{ sp.id }}">{{ sp.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Сумма</label>
+                                                    <input name="summa" type="text" class="form-control" placeholder="сумма" >
+                                                </div>
+                                            </div>
+                                        <div id="app2">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Дата</label>
+                                                    <input id="date" name="date_main" type="text" placeholder="DD/MM/YYYY"
+                                                    onfocus="(this.type='date')"
+                                                    onblur="(this.type='text')" class="form-control">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Проводка</label>
+                                                    <input name="provodka" type="text" class="form-control" placeholder="проводкаы" >
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    <button id="formSendButton" type="submit" data-url="{% url 'api-rasxod-create' %}" class="btn btn-info btn-fill pull-right">Добавить</button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Кому</th>
+                                    <th>Сумма</th>
+                                    <th>Дата</th>
+                                    <th>Проводка</th>
+
+
+                                </thead>
+                                <tbody>
+                                {% for m in rasxod %}
+                                    <tr>
+                                        <td>{{m.id}}</td>
+                                        <td>{{ m.prixod.department.name }}</td>
+                                        <td>{{ m.summa }}</td>
+                                        <td>{{ m.date_main|date:"d.m.Y"|default_if_none:"" }}</td>
+                                        <td>{{ m.provodka }}</td>
+
+
+                                        <td><a href="#" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
+
+
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+    new Vue({
+      el: '#app',
+      data: {
+        x: 'one',
+      },
+    });
+    </script>
+
+    <script>
+        $(function () {
+            $("#formSendButton").click(function (event) {
+                event.preventDefault();
+
+                let formData = new FormData();
+                formData.append("prixod", $("select[name='prixod']").val());
+                formData.append("summa", $("input[name='summa']").val());
+                formData.append("provodka", $("input[name='provodka']").val());
+                formData.append("date_main", $("input[name='date_main']").val());
+
+                $.ajax({
+                    url: $(this).data("url"),
+                    data: formData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    success: function (data) {
+                        var x = document.getElementById("mainSuccess");
+                        x.className = "show";
+                        setTimeout(function(){
+                            x.className = x.className.replace("show", "");
+                            location.reload();
+                        }, 1500);
+                        window.location.href = '/rasxod/list';
+                    },
+                    error: function (data) {
+                        var x = document.getElementById("mainError");
+
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    }
+                });
+            });
+        });
+
+        new Vue({
+          el: "#app2",
+          data: {
+            date: new Date().toISOString().substr(0, 10) // 05/09/2019
+          }
+        })
+    </script>
+    <script>$('#date').datepicker({ dateFormat: 'dd-mm-yy' }).val();</script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+      <link rel="stylesheet" href="/resources/demos/style.css">
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+{% endblock %}

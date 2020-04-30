@@ -8,8 +8,9 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Основной список</h4>
-                                <a href="{% url 'main-create' %}" type="button" class="btn btn-info m-t-10 float-right">Добавить</a>
+                                <h4 class="title">Основной список расходы {{ date_search2 }}</h4>
+                                <a href="{% url 'rasxod-create' %}" type="button" class="btn btn-info m-t-10 float-right">Расход </a>
+                                <a href="{% url 'prixod-create' %}" type="button" class="btn btn-info m-t-10 float-right">Приход</a>
 
                             </div>
 
@@ -29,14 +30,14 @@
                                     {% for m in main %}
                                         <tr>
                                         	<td>{{m.id}}</td>
-                                        	<td>{{ m.prixod.department.name }}</td>
-                                            <td>{{ m.rasxod.department.name }}</td>
+                                            <td>{{ m.prixod.department.name }}</td>
+                                            <td>{{ m.rasxod.department.name  }}</td>
                                             <td>{{ m.summa }}</td>
-                                            <td>{{ m.date|date:"d.m.Y"|default_if_none:"" }}</td>
+                                            <td>{{ m.date_main|date:"d.m.Y"|default_if_none:"" }}</td>
                                             <td>{{ m.provodka }}</td>
 
 
-                                            <td><a href="{% url 'main-update' m.id %}" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
+                                            <td><a href="{% url 'rasxod-update' m.id %}" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
 
 
                                         </tr>

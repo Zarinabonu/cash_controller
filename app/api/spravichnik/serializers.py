@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, raise_errors_on_nested_writes
 
@@ -5,30 +6,29 @@ from app.model import Spravichnik, Department
 
 
 class SpravichnikSerializer(ModelSerializer):
-    # department = serializers.DepartmentSerializer(read_only=True)
+    # user = serializers.DepartmentSerializer(read_only=True)
     department = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Spravichnik
-        fields = ('department',
+        fields = ('user',
                   'rs',
                   'inn',
                   'start_FIO',
-                  'password',
                   'MFO')
 
     def create(self, validated_data):
-        dept = validated_data.pop('department')
-        d = Department.objects.get(id=dept)
+        user = validated_data.pop('user')
+        u = User.objects.get(id=user)
         s = Spravichnik(**validated_data)
-        s.department = d
+        s.user = u
         s.save()
         return s
 
     def update(self, instance, validated_data):
         raise_errors_on_nested_writes('update', self, validated_data)
 
-        dept = validated_data.get('department')
+        dept = validated_data.get('user')
         rs = validated_data.get('rs')
         inn = validated_data.get('inn')
         password = validated_data.get('password')
@@ -66,7 +66,7 @@ class SpravichnikSerializer(ModelSerializer):
 
         # if dept:
         #     d = Department.objects.get(id=dept)
-        #     instance.department = d
+        #     instance.user = d
         #     instance.save()
         # elif rs:
         #     instance.rs = rs

@@ -7,8 +7,53 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
+
+                        <div class="search-form__app">
+                            <form action="#" method="GET">
                             <div class="header">
-                                <h4 class="title">Основной список</h4>
+                                <h4 class="title">Основной список {{ request.user.username }}</h4>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="">Наименование</label>
+                                        <select class="form-control select picker show-tick" name="spravichnik_search" id="">
+                                            {% for s in spr %}
+                                                <option name="spravichnik_search" value="{{ s.id }}">{{ s.department.name }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="">Нач.салдо</label>
+                                        <input name="start_search" type="date" class="form-control" id="" >
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="">Зак.салдо</label>
+                                        <input name="finish_search" type="date" class="form-control" id="" >
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="search-buttons">
+                                        <div class="form-search__button" id="">
+{#                                            <a href="{% url 'saldo-list' %}" type="button" class="btn btn-info m-t-10 float-right">Поиск</a>#}
+                                            <button class="btn btn-info m-t-10 float-right"  id="searchButton" type="submit">Поиск</button>
+
+                                        </div>
+                                    </div>
+                                    <!--<div class="delete-buttons">
+                                        <button id="deleteEmpButton" data-url="#">{% trans 'Delete' %}</button>
+                                    </div>-->
+                                </div>
+
                                 <a href="{% url 'saldo-create' %}" type="button" class="btn btn-info m-t-10 float-right">Добавить</a>
 
                             </div>
@@ -28,8 +73,8 @@
                                         <tr>
                                         	<td>{{ s.id}}</td>
                                         	<td>{{ s.spravichnik.department.name }}</td>
-                                            <td>{{ s.date.month }}.{{ s.date.year }}</td>
-                                            <td>{{ s.summa }}</td>
+                                            <td>{{ s.date_saldo.month }}.{{ s.date_saldo.year }}</td>
+                                            <td>{{ s.count_saldo }}</td>
 
 
                                         </tr>
@@ -39,6 +84,9 @@
                                 </table>
 
                             </div>
+
+                            </form>
+                        </div>
                         </div>
                     </div>
 

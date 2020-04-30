@@ -44,44 +44,78 @@
     	<div class="sidebar-wrapper">
             <div class="logo">
                 <a href="http://www.creative-tim.com" class="simple-text">
-                    Кассовый контроль
+                    {{ request.user.username }}
                 </a>
             </div>
 
             <ul class="nav">
                 <li>
-                    <a href="{% url 'main-list' %}">
+                    <a href="{% url 'rasxod-list' %}">
                         <i class="pe-7s-science"></i>
-                        <p>Основной</p>
+                        <p>Список</p>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{% url 'spravichnik-list' %}">
-                        <i class="pe-7s-note2"></i>
-                        <p>Справичник</p>
+                    <a href="{% url 'prixod-create' %}">
+                        <i class="pe-7s-science"></i>
+                        <p>Приход</p>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'department-list' %}">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>отдел</p>
+                    <a href="{% url 'rasxod-create' %}">
+                        <i class="pe-7s-science"></i>
+                        <p>Расход</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'statistica' %}">
+                        <i class="pe-7s-science"></i>
+                        <p>Статистика</p>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{% url 'saldo-list' %}">
-                        <i class="pe-7s-bell"></i>
-                        <p>Салдо</p>
-                    </a>
-                </li>
-				<li class="active-pro">
-                    <a href="upgrade.html">
-                        <i class="pe-7s-rocket"></i>
-                        <p>Upgrade to PRO</p>
-                    </a>
-                </li>
+
+                {% if request.user.is_superuser %}
+                    <li>
+                        <a href="{% url 'department-list' %}">
+                            <i class="pe-7s-news-paper"></i>
+                            <p>отдел</p>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
+            <li>
+                <form method="get" id="friend-form">
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <label for="">Ижро муддати</label>
+                            <input name="date_search" type="date" class="form-control" id="" value="{{ date_search }}" />
+                        </div>
+                        <div class="search-buttons">
+                            <div class="form-search__button " id="">
+                                <button class="btn btn-info m-t-10 float-right"  id="searchButton" type="submit">Поиск</button>
+                            </div>
+                        </div>
+                </form>
+            </li>
+            <footer class="sidebar-wrapper">
+                <div div class="logo">
+                    <nav class="pull-left">
+                         <ul>
+                             {% for sal in saldo %}
+                                <li>
+                                <a class="simple-text" href="#">
+                                    {{ sal.count_saldo }}  {{ sal.id }}
+                                </a>
+                                </li>
+                             {% endfor %}
+
+                         </ul>
+                    </nav>
+                </div>
+            </footer>
+
     	</div>
     </div>
 
@@ -118,7 +152,7 @@
 
 
                         <li>
-                            <a href="#">
+                            <a href="{% url 'logout' %}">
                                 <p>Log out</p>
                             </a>
                         </li>
@@ -187,7 +221,11 @@
 
 	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
 	<script src="{% static 'js/demo.js' %}"></script>
-
-
+    <script>
+        vm = new Vue({
+          el : '#vueRoot',
+          data : { myDate : new Date().toISOString().slice(0,10) }
+        })
+    </script>
 
 {% block js %}{% endblock %}

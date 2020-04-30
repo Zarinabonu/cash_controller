@@ -15,8 +15,8 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Наименование</label>
-                                                <input id="name" name="name" type="text" class="form-control" placeholder="Company" >
+                                                <label>Парол
+                                                <input id="password" name="password" type="text" class="form-control" placeholder="Company" >
                                             </div>
                                         </div>
                                     </div>
@@ -41,13 +41,14 @@
 
                 let formData = new FormData();
 
-                formData.append("name", $("input[name='name']").val());
+                formData.append("password", $("input[name='password']").val());
+
 
                 var url = $("#updateButton").data("url");
                 $.ajax({
                     url: $(this).data("url"),
                     data: formData,
-                    type: "PUT",
+                    type: "PATCH",
                     contentType: false,
                     processData: false,
                     headers: {'X-CSRFToken': '{{ csrf_token }}'},
@@ -58,7 +59,7 @@
                             x.className = x.className.replace("show", "");
                             location.reload();
                         }, 1500);
-                        window.location.url = '#';
+                        window.location.url = '/department/list';
                     },
                     error: function (data) {
                         var x = document.getElementById("mainError");

@@ -178,7 +178,7 @@
                	var text =  $(this).text();
                	var subtext = $(this).data('subtext') !== undefined ? '<small class="muted">'+$(this).data('subtext')+'</small>' : '';
 
-                //Append any subtext to the main text.
+                //Append any subtext to the rasxod text.
                 text+=subtext;
 
                 if ($(this).parent().is('optgroup') && $(this).data('divider') != true) {

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
@@ -5,7 +6,7 @@ from app.api.saldo.serializers import SaldoSerializer
 from app.model import Saldo
 
 
-class SaldoCreateAPIView(CreateAPIView):
+class SaldoCreateAPIView(LoginRequiredMixin,CreateAPIView):
     queryset = Saldo.objects.all()
     serializer_class = SaldoSerializer
 

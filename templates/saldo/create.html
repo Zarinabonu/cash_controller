@@ -13,21 +13,21 @@
                             <div class="content">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Отдел</label>
-                                                <select class="form-control selectpicker show-tick" name="spravichnik" id="region">
-                                                    {% for sp in spr %}
-                                                        <option value="{{ sp.id }}">{{ sp.department.name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                        </div>
+{#                                        <div class="col-md-4">#}
+{#                                            <div class="form-group">#}
+{#                                                <label>Отдел</label>#}
+{#                                                <select class="form-control selectpicker show-tick" name="spravichnik" id="region">#}
+{#                                                    {% for sp in spr %}#}
+{#                                                        <option value="{{ sp.id }}">{{ sp.user.name }}</option>#}
+{#                                                    {% endfor %}#}
+{#                                                </select>#}
+{#                                            </div>#}
+{#                                        </div>#}
 
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Дата</label>
-                                                <input name="date" type="date" class="form-control" placeholder="Company" >
+                                                <input name="date_saldo" type="date" class="form-control" placeholder="Company" >
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -59,7 +59,7 @@
                 let formData = new FormData();
                  formData.append("spravichnik", $("select[name='spravichnik']").val());
                 formData.append("tick", $("input[name='tick']").val());
-                formData.append("date", $("input[name='date']").val());
+                formData.append("date_saldo", $("input[name='date_saldo']").val());
 
                 $.ajax({
                     url: $(this).data("url"),
@@ -75,7 +75,7 @@
                             x.className = x.className.replace("show", "");
                             location.reload();
                         }, 1500);
-                        window.location.href = '/main/list';
+                        window.location.href = '/';
                     },
                     error: function (data) {
                         var x = document.getElementById("mainError");

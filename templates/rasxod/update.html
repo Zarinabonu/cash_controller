@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static i18n %}
-
 {% block content %}
+
     <div class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Создать расход</h4>
+                                <h4 class="title">Редактировать расход</h4>
                             </div>
                             <div class="content">
                                 <form>
@@ -19,7 +19,7 @@
                                                 <div class="form-group">
                                                     <label>Kому</label>
                                                     <select class="form-control selectpicker show-tick" name="prixod" id="region">
-                                                        {% for sp in user %}
+                                                        {% for sp in spravichnik %}
                                                             <option value="{{ sp.id }}">{{ sp.department.name }}</option>
                                                         {% endfor %}
                                                     </select>
@@ -30,14 +30,14 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Сумма</label>
-                                                    <input name="summa" type="text" class="form-control" placeholder="сумма" onchange="this.value = this.value.replace(/,/g, '.')">
+                                                    <input name="summa" type="text" class="form-control" value="{{ rasxod.summa }}" placeholder="сумма" >
                                                 </div>
                                             </div>
                                         <div id="app2">
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Дата</label>
-                                                    <input name="date_main" type="date" data-date="" data-date-format="DD MM YYYY" class="form-control"  value="{{ date|date:"Y-m-d" }}">
+                                                    <input name="date_main" type="date" data-date=""  data-date-format="DD MM YYYY" class="form-control"  value="{{ rasxod.date_main|date:"Y-m-d" }}">
 {#                                                    #}
 
                                                 </div>
@@ -46,52 +46,18 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Проводка</label>
-                                                    <input name="provodka" type="text" class="form-control" placeholder="проводкаы" >
+                                                    <input name="provodka" value="{{ rasxod.provodka }}" type="text" class="form-control" placeholder="проводкаы" >
                                                 </div>
                                             </div>
 
                                         </div>
 
-                                    <button id="formSendButton" type="submit" data-url="{% url 'api-rasxod-create' %}" class="btn btn-info btn-fill pull-right">Добавить</button>
+                                    <button id="updateButton" type="submit" class="btn btn-success" data-url="{% url 'api-rasxod-update' rasxod.id %}"> <i class="fa fa-check"></i> Редактировать</button>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
-                        <div class="content table-responsive table-full-width">
-                            <table class="table table-hover table-striped">
-                                <thead>
-                                    <th>ID</th>
-                                    <th>Кому</th>
-                                    <th>Сумма</th>
-                                    <th>Дата</th>
-                                    <th>Проводка</th>
-
-
-                                </thead>
-                                <tbody>
-                                {% for m in rasxod %}
-                                    <tr>
-                                        <td>{{m.id}}</td>
-                                        <td>{{ m.prixod.department.name }}</td>
-                                        <td>{{ m.summa }}</td>
-{#                                        align="right"#}
-                                        <td>{{ m.date_main|date:"d.m.Y"|default_if_none:"" }}</td>
-                                        <td>{{ m.provodka }}</td>
-
-
-                                        <td align="right"><a href="{% url 'rasxod-update' m.id %}" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
-                                        <td align="right"><a href="{% url 'api-rasxod-destroy' m.id %}" class="label label-info"><i class="fas fa-delete"></i> Удалить</a></td>
-
-
-                                    </tr>
-                                {% endfor %}
-
-                                </tbody>
-                            </table>
-
-                        </div>
                         </div>
                     </div>
-
 
                 </div>
             </div>
@@ -99,29 +65,24 @@
 {% endblock %}
 {% block js %}
     <script>
-    new Vue({
-      el: '#app',
-      data: {
-        x: 'one',
-      },
-    });
-    </script>
+        $(document).ready(function () {
+            $("#updateButton").click(function (e) {
+                e.preventDefault();
 
-    <script>
-        $(function () {
-            $("#formSendButton").click(function (event) {
-                event.preventDefault();
 
                 let formData = new FormData();
+
                 formData.append("prixod", $("select[name='prixod']").val());
                 formData.append("summa", $("input[name='summa']").val());
                 formData.append("provodka", $("input[name='provodka']").val());
                 formData.append("date_main", $("input[name='date_main']").val());
 
+
+                var url = $("#updateButton").data("url");
                 $.ajax({
                     url: $(this).data("url"),
                     data: formData,
-                    type: "POST",
+                    type: "PATCH",
                     contentType: false,
                     processData: false,
                     headers: {'X-CSRFToken': '{{ csrf_token }}'},
@@ -132,7 +93,7 @@
                             x.className = x.className.replace("show", "");
                             location.reload();
                         }, 1500);
-                        window.location.href = 'rasxod/create';
+                        window.location.url = 'rasxod/create';
                     },
                     error: function (data) {
                         var x = document.getElementById("mainError");
@@ -141,20 +102,8 @@
                         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                     }
                 });
-            });
+
+            })
         });
-
-        new Vue({
-          el: "#app2",
-          data: {
-            date: new Date().toISOString().substr(0, 10) // 05/09/2019
-          }
-        })
     </script>
-    <script>$('#date').datepicker({ dateFormat: 'dd-mm-yy' }).val();</script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-      <link rel="stylesheet" href="/resources/demos/style.css">
-      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 {% endblock %}

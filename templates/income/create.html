@@ -29,13 +29,13 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Сумма</label>
-                                                    <input name="summa" type="text" class="form-control" placeholder="сумма" >
+                                                    <input name="summa" type="text" class="form-control" placeholder="сумма" onchange="this.value = this.value.replace(/,/g, '.')">
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Дата</label>
-                                                    <input name="date_main" type="date" class="form-control" placeholder="Company" >
+                                                    <input name="date_main" type="date" class="form-control" value="{{ date|date:"Y-m-d" }}" >
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -72,8 +72,8 @@
                                                 <td>{{ m.provodka }}</td>
 
 
-                                                <td><a href="#" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
-
+                                                <td align="right"><a href="{% url 'prixod-update' m.id %}" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
+                                                <td align="right"><a href="{% url 'api-prixod-destroy' m.id %}" class="label label-info"><i class="fas fa-delete"></i> Удалить</a></td>
 
                                             </tr>
                                         {% endfor %}
@@ -136,6 +136,31 @@
                 });
             });
         });
+    </script>
+    <script>
+    function getDate() {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+      var yyyy = today.getFullYear();
+
+      if(dd<10) {
+          dd = '0'+dd
+      }
+
+      if(mm<10) {
+          mm = '0'+mm
+      }
+
+      today = yyyy + '/' + mm + '/' + dd;
+      console.log(today);
+      document.getElementById("name").value = today;
+    }
+
+
+    window.onload = function() {
+      getDate();
+    };
     </script>
 
 

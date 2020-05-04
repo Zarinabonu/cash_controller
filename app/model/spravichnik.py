@@ -11,8 +11,8 @@ class Spravichnik(models.Model):
     start_FIO = models.TextField(blank=True, null=True)
     MFO = models.TextField(blank=True, null=True)
 
-    def __str__(self):
-        return self.department.name
+    # def __str__(self):
+    #     return self.department.name
 
     # def __str__(self):
     #     return self.user.username

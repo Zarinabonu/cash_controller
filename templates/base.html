@@ -51,26 +51,26 @@
             <ul class="nav">
                 <li>
                     <a href="{% url 'rasxod-list' %}">
-                        <i class="pe-7s-science"></i>
+{#                        <i class="pe-7s-science"></i>#}
                         <p>Список</p>
                     </a>
                 </li>
 
                 <li>
                     <a href="{% url 'prixod-create' %}">
-                        <i class="pe-7s-science"></i>
+{#                        <i class="pe-7s-science"></i>#}
                         <p>Приход</p>
                     </a>
                 </li>
                 <li>
                     <a href="{% url 'rasxod-create' %}">
-                        <i class="pe-7s-science"></i>
+{#                        <i class="pe-7s-science"></i>#}
                         <p>Расход</p>
                     </a>
                 </li>
                 <li>
                     <a href="{% url 'statistica' %}">
-                        <i class="pe-7s-science"></i>
+{#                        <i class="pe-7s-science"></i>#}
                         <p>Статистика</p>
                     </a>
                 </li>
@@ -106,7 +106,7 @@
                              {% for sal in saldo %}
                                 <li>
                                 <a class="simple-text" href="#">
-                                    {{ sal.count_saldo }}  {{ sal.id }}
+                                    {{ sal.count_saldo }}
                                 </a>
                                 </li>
                              {% endfor %}

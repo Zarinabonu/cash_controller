@@ -1,3 +1,5 @@
+from fnmatch import translate
+
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, raise_errors_on_nested_writes
@@ -20,36 +22,32 @@ class MainSerializer(ModelSerializer):
         pri = validated_data.pop('prixod')
         main = Main(**validated_data)
         request = self.context['request']
+        sum = validated_data.get('summa')
+        # summ = sum.str.replace(',', '')
+        # print('api summa is ', sum)
+        # summ = translate(sum(',', '.'))
+        # print('api222 summa is ', summ)
+
         prixod = Spravichnik.objects.get(id=pri)
         rasxod = Spravichnik.objects.get(department__user=request.user)
         print('prixod IS', prixod)
         print('rasxod IS', rasxod)
-
-
 
         main.prixod = prixod
         main.rasxod = rasxod
         main.save()
         return main
 
-
     def update(self, instance, validated_data):
         raise_errors_on_nested_writes('update', self, validated_data)
 
         pri = validated_data.get('prixod')
-        ras = validated_data.get('rasxod')
         summa = validated_data.get('summa')
         provodka = validated_data.get('provodka')
         date_main = validated_data.get('date_main')
         if instance.active==True:
-            if ras:
-                p = Spravichnik.objects.get(id=ras)
-
-                instance.rasxod = p
-                instance.save()
             if pri:
                 p = Spravichnik.objects.get(id=pri)
-
                 instance.prixod = p
                 instance.save()
             if summa:
@@ -59,7 +57,7 @@ class MainSerializer(ModelSerializer):
                 instance.provodka = provodka
                 instance.save()
             if date_main:
-                instance.date = date_main
+                instance.date_main = date_main
                 instance.save()
 
         return instance

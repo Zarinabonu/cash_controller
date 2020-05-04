@@ -130,7 +130,7 @@ class IncomeListView(LoginRequiredMixin, TemplateView):
 
 class IncomeUpdateView(LoginRequiredMixin, DetailView):
     template_name = 'income/update.html'
-    context_object_name = 'rasxod'
+    context_object_name = 'prixod'
     pk_url_kwarg = 'id'
     queryset = Main.objects.all()
 
@@ -144,16 +144,44 @@ class IncomeCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'income/create.html'
 
     def get_context_data(self, **kwargs):
+        date_search2= self.request.GET.get('date_search')
         request = self.request.user.id
         user_request = User.objects.get(id=request)
-
+        datee = datetime.datetime.today().date()
+        # strftime('%d-%m-%Y')
         m = Main.objects.all()
+        sal = Saldo.objects.all()
+
         m = m.filter(prixod__department__user=user_request)
+        ma = m.filter(date_main__year=datetime.datetime.today().year).filter(date_main__month=datetime.datetime.today().month)
+        sald = sal.filter(date_saldo__year=datetime.datetime.today().year).filter(date_saldo__month=datetime.datetime.today().month)
         sp = Spravichnik.objects.all()
         context = {
-            'prixod': m,
-            'spr': sp
+            'prixod': ma,
+            'spr': sp,
+            'date': datee,
+            'saldo': sald
+
         }
+        if date_search2:
+            userinput = str(date_search2)
+            due = datetime.datetime.strptime(userinput, '%Y-%m-%d').date()
+            print('sana ', due.year, 'month', due.month)
+            sal = sal.filter(spravichnik__department__user=user_request).filter(date_saldo__year=due.year).filter(
+                date_saldo__month=due.month)
+            m = m.filter(date_main__year=due.year).filter(date_main__month=due.month)
+            print('saldo', sal)
+            context = {
+                'prixod': m,
+                'date_search': date_search2,
+                'saldo': sal,
+                'spr': sp,
+                'date': datee,
+
+
+
+            }
+
         return context
 
 
@@ -188,15 +216,53 @@ class RasxodCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         request = self.request.user.id
+        date_search2 = self.request.GET.get('date_search')
         user_request = User.objects.get(id=request)
+        datee = datetime.datetime.today().date()
+
 
         rasxod = Main.objects.all()
+        sal = Saldo.objects.all()
+
         rasxod = rasxod.filter(rasxod__department__user=user_request)
-        useer = Department.objects.all()
+        ras = rasxod.filter(date_main__year=datetime.datetime.today().year).filter(date_main__month=datetime.datetime.today().month)
+        sald = sal.filter(date_saldo__year=datetime.datetime.today().year).filter(date_saldo__month=datetime.datetime.today().month)
+        useer = Spravichnik.objects.all()
         context = {
-            'rasxod': rasxod,
-            'user': useer
+            'rasxod': ras,
+            'user': useer,
+            'date': datee,
+            'saldo': sald
         }
+        if date_search2:
+            userinput = str(date_search2)
+            due = datetime.datetime.strptime(userinput, '%Y-%m-%d').date()
+            print('sana ', due.year, 'month', due.month)
+            sal = sal.filter(spravichnik__department__user=user_request).filter(date_saldo__year=due.year).filter(
+                date_saldo__month=due.month)
+            m = rasxod.filter(date_main__year=due.year).filter(date_main__month=due.month)
+            print('saldo', sal)
+            context = {
+                'rasxod': m,
+                'date_search': date_search2,
+                'saldo': sal,
+                'user': useer,
+                'date': datee,
+
+            }
+
+        return context
+
+
+class RasxodUpdateView(LoginRequiredMixin, DetailView):
+    template_name = 'rasxod/update.html'
+    pk_url_kwarg = 'id'
+    queryset = Main.objects.all()
+    context_object_name = 'rasxod'
+
+    def get_context_data(self, **kwargs):
+        context = super(RasxodUpdateView, self).get_context_data(**kwargs)
+        context['spravichnik'] = Spravichnik.objects.all()
         return context
 
 
@@ -314,7 +380,7 @@ class LogOut(View):
 
 
 class StatisticaView(TemplateView):
-    template_name = 'statistica.html'
+    template_name = 'dashboard.html'
 
 
 

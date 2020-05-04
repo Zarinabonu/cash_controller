@@ -31,7 +31,6 @@ class IncomeSerializer(ModelSerializer):
     def update(self, instance, validated_data):
         raise_errors_on_nested_writes('update', self, validated_data)
 
-        pri = validated_data.get('prixod')
         ras = validated_data.get('rasxod')
         summa = validated_data.get('summa')
         provodka = validated_data.get('provodka')
@@ -42,11 +41,6 @@ class IncomeSerializer(ModelSerializer):
 
                 instance.rasxod = p
                 instance.save()
-            if pri:
-                p = Spravichnik.objects.get(id=pri)
-
-                instance.prixod = p
-                instance.save()
             if summa:
                 instance.summa = summa
                 instance.save()
@@ -54,7 +48,7 @@ class IncomeSerializer(ModelSerializer):
                 instance.provodka = provodka
                 instance.save()
             if date_main:
-                instance.date = date_main
+                instance.date_main = date_main
                 instance.save()
 
         return instance

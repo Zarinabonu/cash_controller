@@ -8,25 +8,14 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Редактировать основной список</h4>
+                                <h4 class="title">Редактировать приход</h4>
                             </div>
                             <div class="content">
                                 <form>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Приход</label>
-                                                <select class="form-control selectpicker show-tick" name="prixod" id="region">
-                                                    {% for sp in spr %}
-                                                        <option value="{{ sp.id }}">{{ sp.department.name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Расход</label>
+                                                <label>От кого</label>
                                                 <select class="form-control selectpicker show-tick" name="rasxod" id="region">
                                                     {% for sp in spr %}
                                                         <option value="{{ sp.id }}">{{ sp.department.name }}</option>
@@ -34,29 +23,28 @@
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Сумма</label>
-                                                <input name="summa" type="text" class="form-control" placeholder="Company" >
+                                                <input value="{{ prixod.summa }}" name="summa" type="text" class="form-control" placeholder="Company" >
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Дата</label>
-                                                <input name="date_main" type="date" class="form-control" placeholder="Company" >
+                                                <input value="{{ prixod.date_main|date:"Y-m-d" }}" name="date_main" type="date" class="form-control" placeholder="Company" >
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Проводка</label>
-                                                <input name="provodka" type="text" class="form-control" placeholder="Company" >
+                                                <input value="{{ prixod.provodka }}" name="provodka" type="text" class="form-control" placeholder="Company" >
                                             </div>
                                         </div>
 
                                     </div>
 
-                                    <button id="updateButton" type="submit" class="btn btn-success" data-url="{% url 'api-rasxod-update' main.id %}"> <i class="fa fa-check"></i> Редактировать</button>
+                                    <button id="updateButton" type="submit" class="btn btn-success" data-url="{% url 'api-prixod-update' prixod.id %}"> <i class="fa fa-check"></i> Редактировать</button>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
@@ -76,7 +64,6 @@
 
                 let formData = new FormData();
 
-                formData.append("prixod", $("select[name='prixod']").val());
                 formData.append("rasxod", $("select[name='rasxod']").val());
                 formData.append("summa", $("input[name='summa']").val());
                 formData.append("provodka", $("input[name='provodka']").val());
@@ -87,7 +74,7 @@
                 $.ajax({
                     url: $(this).data("url"),
                     data: formData,
-                    type: "PUT",
+                    type: "PATCH",
                     contentType: false,
                     processData: false,
                     headers: {'X-CSRFToken': '{{ csrf_token }}'},

@@ -17,10 +17,12 @@ class SaldoSerializer(ModelSerializer):
         # sp = validated_data.pop('spravichnik')
 
         saldo = Saldo(**validated_data)
+        sald = Saldo.objects.all()
+        sald
         request = self.context['request']
         print('REQUEST USER', request.user.username)
         us = User.objects.get(username=request.user.username)
-        ras = Spravichnik.objects.get(user=us)
+        ras = Spravichnik.objects.get(department__user=us)
         saldo.spravichnik = ras
         saldo.save()
 

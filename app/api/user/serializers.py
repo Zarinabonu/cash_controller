@@ -14,9 +14,9 @@ class UserSerializer(ModelSerializer):
         departmen = Department(**validated_data)
         u = User.objects.create(username=validated_data.get('name'))
         u.set_password(validated_data.get('password'))
-        u.save()
         departmen.user = u
         departmen.save()
+        u.save()
         return u
 
     def update(self, instance, validated_data):

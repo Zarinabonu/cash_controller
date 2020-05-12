@@ -38,5 +38,6 @@ urlpatterns = [
     path('prixod/update/<int:id>', views.IncomeUpdateView.as_view(), name='prixod-update'),
     path('prixod/create', views.IncomeCreateView.as_view(), name='prixod-create'),
     path('statistica', views.StatisticaView.as_view(), name='statistica'),
+    path('excel', views.ExcelView.as_view(), name='excel'),
 
 ]

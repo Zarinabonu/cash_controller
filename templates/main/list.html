@@ -8,20 +8,19 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Основной список расходы {{ date_search2 }}</h4>
-                                <a href="{% url 'rasxod-create' %}" type="button" class="btn btn-info m-t-10 float-right">Расход </a>
-                                <a href="{% url 'prixod-create' %}" type="button" class="btn btn-info m-t-10 float-right">Приход</a>
-
+                                {% for old_saldo in month_ago_saldo%}
+                                <h4 class="title">Остаток на {{ old_saldo.date_saldo|date:"d.m.Y"|default_if_none:"" }}: {{ old_saldo.count_saldo }} сум</h4>
+                                {% endfor %}
                             </div>
 
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
                                     <thead>
                                         <th>ID</th>
+                                        <th>Дата</th>
+                                        <th>Организации</th>
                                     	<th>Приход</th>
                                         <th>Расход</th>
-                                        <th>Сумма</th>
-                                        <th>Дата</th>
                                         <th>Проводка</th>
 
 
@@ -29,15 +28,19 @@
                                     <tbody>
                                     {% for m in main %}
                                         <tr>
-                                        	<td>{{m.id}}</td>
-                                            <td>{{ m.prixod.department.name }}</td>
-                                            <td>{{ m.rasxod.department.name  }}</td>
-                                            <td>{{ m.summa }}</td>
-                                            <td>{{ m.date_main|date:"d.m.Y"|default_if_none:"" }}</td>
-                                            <td>{{ m.provodka }}</td>
+                                        <script>console.log({{ p }})</script>
+                                        	<td>{{ m.main.id}}</td>
+                                            <td>{{ m.main.date|date:"d.m.Y"|default_if_none:"" }}</td>
+                                            <td>{{ m.main }}</td>
+                                            <td>{{ m.prixod|default_if_none:"0" }}</td>
+                                            <td>{{ m.rasxod|default_if_none:"0" }}</td>
+                                            <td>{{ m.main.provodka }}</td>
+{#                                            <td>{{ m.main.date_main|date:"d.m.Y"|default_if_none:"" }}</td>#}
+{#                                            <td>{{ m.main }}</td>#}
+{#                                            <td>{{ m.prixod.summa  }}</td>#}
+{#                                            <td>{{ m.rasxod.summa }}</td>#}
 
 
-                                            <td><a href="{% url 'rasxod-update' m.id %}" class="label label-info"><i class="fas fa-edit"></i> Ред-ть</a></td>
 
 
                                         </tr>
@@ -47,6 +50,13 @@
                                 </table>
 
                             </div>
+                            <div class="bottom">
+                                <h4 class="title">Итого расход: {{ rasxod_sum }}</h4>
+                                <h4 class="title">Итого приход: {{ prixod_sum }}</h4>
+                                <h4 class="title">Остаток на {{ today }} : {{ saldo_now }}</h4>
+                                <a href="{% url 'excel' %}" type="button" class="btn btn-info m-t-10 float-right">Excel</a>
+                            </div>
+
                         </div>
                     </div>
 
